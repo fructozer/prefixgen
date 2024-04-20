@@ -1,9 +1,13 @@
 name: Build and Deploy
 on:
+  workflow_dispatch: 
   push:
     branches:
       - main
     paths:
+      - svelte.config.js
+      - tsconfig.json
+      - vite.config.ts
       - src/**
       - static/**
 
