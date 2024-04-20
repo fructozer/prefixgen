@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { KeyChar } from "$lib/font.js";
+	import { drawText, type KeyChar } from "$lib/font.js";
 	import { writable } from 'svelte/store';
     export let data;
 
@@ -11,17 +11,11 @@
         if (canvas==undefined) return
         const context = canvas.getContext('2d');
         context?.clearRect(0,0, canvas.width, canvas.height)
-        const t = $text.toUpperCase()
-        let cursor = 0;
-        for (let i=0; i<t.length; i++){
-            if (t.charAt(i)==' ') {
-                cursor+=5
-                continue
-            }
-            cursor = data.font!.get(t.charAt(i) as KeyChar)!.draw(context!,0,cursor)
-        }
+        context!.fillStyle = $text_color
+        drawText(context!, data.font!, $text, 1, 1)
     }
     text.subscribe(draw)
+    text_color.subscribe(draw)
 </script>
 
 
@@ -34,14 +28,14 @@
 <style>
     :global(body){
         background: #181818;
-        mar: 0;
+        margin: 0;
     }
 
     canvas {
         background: #aaa;
         image-rendering: pixelated;
-        width: 1600px;
-        height: 160px;
+        width: 800px;
+        height: 80px;
     }
 
 </style>

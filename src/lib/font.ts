@@ -60,7 +60,10 @@ export async function loadFont(url: string): Promise<Map<KeyChar,BitChar>|null>{
                     let alpha = data[4*(b*size+a)+3];
                     font_data.push(alpha>0)
                 }   
-                const bitChar = new BitChar(rx2-rx1+1, ry2-ry1+1, font_data)
+                
+                console.log(c)
+                console.log(font_data)
+                const bitChar = new BitChar( ry2-ry1+1,rx2-rx1+1, font_data)
                 map.set(c, bitChar);
             }
             r(map as Map<KeyChar,BitChar>)
@@ -81,6 +84,23 @@ export class BitChar{
             if (this.data[b*this.width+a])
                 context.fillRect(b+y,a+x,1,1);
         }
-        return y+this.width+1;
+        return y+this.height+1;
+    }
+}
+export function drawText(
+    context: CanvasRenderingContext2D, 
+    font: Map<KeyChar,BitChar>, 
+    text: string, x: number, y: number){
+    const t = text
+        .toUpperCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+    let cursor = x
+    for (let i=0; i<t.length; i++){
+        if (t.charAt(i)==' ') {
+            cursor+=3
+            continue
+        }
+        cursor = font.get(t.charAt(i) as KeyChar)!.draw(context!,y,cursor)
     }
 }
