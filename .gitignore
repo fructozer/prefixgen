@@ -3,6 +3,7 @@ node_modules
 /build
 /.svelte-kit
 /package
+/gh-pages
 .env
 .env.*
 !.env.example
