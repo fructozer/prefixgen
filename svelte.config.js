@@ -12,7 +12,7 @@ const config = {
 		adapter: adapter({
 			pages:       'gh-pages',
 			assets:      'gh-pages',
-			fallback:    '404.html',
+			fallback:    'index.html',
 			precompress: false,
 			strict:      true
 		})
