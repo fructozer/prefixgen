@@ -12,14 +12,21 @@
         const context = canvas.getContext('2d');
         context?.clearRect(0,0, canvas.width, canvas.height)
         const t = $text.toUpperCase()
-        data.font?.get(t.charAt(0) as KeyChar)?.draw(context!,0,0)
+        let cursor = 0;
+        for (let i=0; i<t.length; i++){
+            if (t.charAt(i)==' ') {
+                cursor+=5
+                continue
+            }
+            cursor = data.font!.get(t.charAt(i) as KeyChar)!.draw(context!,0,cursor)
+        }
     }
     text.subscribe(draw)
 </script>
 
 
 
-<canvas width="16" height="16" bind:this={canvas}>
+<canvas width="160" height="16" bind:this={canvas}>
 </canvas>
 <input type="text"  name="" id="" bind:value={$text}>
 <input type="color" name="" id="" bind:value={$text_color}>
@@ -27,12 +34,13 @@
 <style>
     :global(body){
         background: #181818;
+        mar: 0;
     }
 
     canvas {
         background: #aaa;
         image-rendering: pixelated;
-        width: 160px;
+        width: 1600px;
         height: 160px;
     }
 

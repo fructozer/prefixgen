@@ -81,6 +81,6 @@ export class BitChar{
             if (this.data[b*this.width+a])
                 context.fillRect(b+y,a+x,1,1);
         }
-        return x+this.width+1;
+        return y+this.width+1;
     }
 }
