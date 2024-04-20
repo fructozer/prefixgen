@@ -2,6 +2,8 @@ import adapter     from '@sveltejs/adapter-static';
 import preprocess  from 'svelte-preprocess';
 import { resolve } from 'path';
 
+const dev = process.argv.includes('dev');
+
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
 	// Consult https://kit.svelte.dev/docs/integrations#preprocessors
@@ -12,10 +14,13 @@ const config = {
 		adapter: adapter({
 			pages:       'gh-pages',
 			assets:      'gh-pages',
-			fallback:    'index.html',
+			fallback:    '404.html',
 			precompress: false,
 			strict:      true
-		})
+		}),
+		paths:   {
+			base: dev ? '' : '/prefixgen'
+		}
 	}
 };
 
