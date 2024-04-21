@@ -23,6 +23,7 @@
 <canvas width="160" height="16" bind:this={canvas}>
 </canvas>
 <input type="text"  name="" id="" bind:value={$text}>
+
 <input type="color" name="" id="" bind:value={$text_color}>
 
 <style>
