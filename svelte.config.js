@@ -19,7 +19,7 @@ const config = {
 			strict:      true
 		}),
 		paths:   {
-			base: dev ? '' : 'https://raw.githubusercontent.com/fructozer/prefixgen/gh-pages'
+			base: dev ? '' : '/prefixgen'
 		}
 	}
 };
