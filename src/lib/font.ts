@@ -12,7 +12,7 @@ export type KeyChar =
     'M'|'N'|'O'|'P'|'Q'|'R'|
     'S'|'T'|'U'|'V'|'W'|'X'|
     'Y'|'Z'|'0'|'1'|'2'|'3'|
-    '4'|'5'|'6'|'7'|'8'|'9'
+    '4'|'5'|'6'|'7'|'8'|'9'|' '
 
 export async function loadFont(url: string): Promise<Map<KeyChar,BitChar>|null>{
     const image = new Image();
@@ -61,8 +61,6 @@ export async function loadFont(url: string): Promise<Map<KeyChar,BitChar>|null>{
                     font_data.push(alpha>0)
                 }   
                 
-                console.log(c)
-                console.log(font_data)
                 const bitChar = new BitChar( ry2-ry1+1,rx2-rx1+1, font_data)
                 map.set(c, bitChar);
             }
@@ -103,4 +101,51 @@ export function drawText(
         }
         cursor = font.get(t.charAt(i) as KeyChar)!.draw(context!,y,cursor)
     }
+}
+
+
+export class BitFont{
+    public chars: Map<KeyChar,BitChar> = new Map()
+    public unknow: BitChar = new BitChar(3,1, [true, true, true])
+
+    constructor(){
+        const space = new BitChar(1,1,[false])
+        this.chars.set(' ', space)
+    }
+
+    public get(char: string): BitChar{
+        const c = char
+        .toUpperCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .charAt(0);
+        if (this.chars.get(c as KeyChar)==undefined) {
+            return this.unknow;
+        } else return this.chars.get(c as KeyChar)!
+    }
+
+    public render(text: string, color: string){
+        const box = textBox(this.chars, text);
+        const c = new OffscreenCanvas(box.width, box.height);
+        const x = c.getContext('2d')!;
+        
+    }
+}
+
+export function textBox(font: Map<KeyChar,BitChar>, text: string){
+    let width = 0, height = 0;
+    const t = text
+        .toUpperCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+    for (let i=0; i<t.length; i++){
+        if (t.charAt(i)==' ') {
+            width += 3
+            continue
+        }
+        width += font.get(t.charAt(i) as KeyChar)!.width+1
+        height = Math.max(height, font.get(t.charAt(i) as KeyChar)!.height)
+    }
+    if (width>0) width--
+    return {width, height}
 }
